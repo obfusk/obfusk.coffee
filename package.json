@@ -24,7 +24,7 @@
   "files"           : [ "src/obfusk.js", "README.md" ],
 
   "dependencies"    : { "underscore": ">=1.5.1" },
-  "devDependencies" : { "coffee": ">=1.6.3" },
+  "devDependencies" : { "coffee-script": ">=1.6.3" },
 
   "scripts": {
     "test": "jasmine-node spec/"
