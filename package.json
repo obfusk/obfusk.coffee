@@ -1,0 +1,32 @@
+{
+  "name"            : "obfusk",
+  "homepage"        : "https://github.com/obfusk/obfusk.coffee",
+  "description"     : "functional programming library for js/coffee",
+
+  "version"         : "0.0.1-SNAPSHOT",
+  "author"          : "Felix C. Stegerman <flx@obfusk.net>",
+
+  "keywords"        : [ "util", "functional" ],
+
+  "licenses": [
+    { "type"        : "GPLv2",
+      "url"         : "http://www.opensource.org/licenses/GPL-2.0" },
+    { "type"        : "EPLv1",
+      "url"         : "http://www.opensource.org/licenses/EPL-1.0" }
+  ],
+
+  "repository": {
+    "type"          : "git",
+    "url"           : "https://github.com/obfusk/obfusk.coffee.git"
+  },
+
+  "main"            : "src/obfusk.js",
+  "files"           : [ "src/obfusk.js", "README.md" ],
+
+  "dependencies"    : { "underscore": ">=1.5.1" },
+  "devDependencies" : { "coffee": ">=1.6.3" },
+
+  "scripts": {
+    "test": "jasmine-node spec/"
+  }
+}
