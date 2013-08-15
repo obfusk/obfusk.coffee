@@ -10,5 +10,5 @@ end
 
 desc 'Cleanup'
 task :clean do
-  sh 'rm -rf doc/'
+  sh 'rm -rf doc/ node_modules/'
 end
