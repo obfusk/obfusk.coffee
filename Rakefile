@@ -1,6 +1,6 @@
 desc 'Run specs'
 task :spec do
-  sh 'jasmine-node spec/'
+  sh 'jasmine-node --coffee spec/'
 end
 
 desc 'Generate docs'
