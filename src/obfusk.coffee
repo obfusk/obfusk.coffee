@@ -2,19 +2,27 @@
 #
 #     File        : obfusk.coffee
 #     Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-#     Date        : 2013-08-15
+#     Date        : 2013-08-16
 #
 #     Copyright   : Copyright (C) 2013  Felix C. Stegerman
 #     Licence     : GPLv2 or EPLv1
 #
 # <!-- }}}1 -->
 
-# underscore + exports + misc
+# functional programming library for js/coffee
+#
+# https://github.com/obfusk/obfusk.coffee
+#
+# License: GPLv2 or EPLv1.
+
+# ## underscore + exports + misc
+
 U = this._ || require 'underscore'
 O = exports ? this.obfusk ||= {}
 misc = O.misc ||= {}
 
-# <!-- -->
+
+# ## miscellaneous
 
 # make first char of string uppercase
 #
@@ -28,7 +36,8 @@ misc.titleCase = titleCase = (x) ->
 O.qw = qw = (xs...) ->
   xs.join(' ').replace(/,/g,' ').split(/\s+/)
 
-# <!-- -->
+
+# ## lazy
 
 # is this a lazy object?; see lazy
 O.isLazy = isLazy = (x) -> x.lazy == lazy
@@ -48,7 +57,8 @@ O.lazy = lazy = (x) ->                                          # {{{1
   g.lazy = lazy; g
                                                       #  <!-- }}}1 -->
 
-# <!-- -->
+
+# ## ADTs
 
 # algebraic data type; returns an object with `.type`, `.ctor1`, ...;
 # each constructor creates an object using the supplied function,
@@ -67,7 +77,8 @@ O.data = data = (ctors = {}) ->                                 # {{{1
 # run the function matching the constructor
 O.match = match = (x, f = {}) -> f[x.ctor]? x
 
-# <!-- -->
+
+# ## Maybe
 
 # Maybe type: optional value
 O.Maybe = Maybe = data
@@ -77,7 +88,8 @@ O.Maybe = Maybe = data
 O.Nothing = Nothing = Maybe.Nothing
 O.Just    = Just    = Maybe.Just
 
-# <!-- -->
+
+# ## Either
 
 # Either type: value with two possibilities
 O.Either = Either = data
@@ -87,7 +99,8 @@ O.Either = Either = data
 O.Left  = Left  = Either.Left
 O.Right = Right = Either.Right
 
-# <!-- -->
+
+# ## List
 
 # List type: lazy list
 O.List = List = data
@@ -97,13 +110,14 @@ O.List = List = data
 O.Nil   = Nil   = List.Nil
 O.Cons  = Cons  = List.Cons
 
-# <!-- -->
-
 # create a List from arguments
 #
 #     list 1, 2, 3
 O.list = list = (x, xt...) ->
   if arguments.length == 0 then Nil() else Cons x, lazy -> list xt...
+
+
+# ## List functions
 
 # List each
 #
@@ -119,7 +133,8 @@ List.toArray = (xs) ->
 # List length
 List.len = (xs) -> n = 0; List.each (-> ++n), xs; n
 
-# <!-- -->
+
+# ## ...
 
 # ...
 

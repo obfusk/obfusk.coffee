@@ -2,7 +2,7 @@
 #
 # File        : obfusk_spec.coffee
 # Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-# Date        : 2013-08-15
+# Date        : 2013-08-16
 #
 # Copyright   : Copyright (C) 2013  Felix C. Stegerman
 # Licence     : GPLv2 or EPLv1
