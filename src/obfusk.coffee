@@ -42,6 +42,36 @@ O.qw = qw = (xs...) ->
 O.error = error = (x) -> throw new Error x
 
 
+# overloaded arity
+# ----------------
+
+# <!-- {{{1 -->
+#
+# creates a functions with overloaded arity; dispatches bases on
+# arguments.length; if no match is found, dispatches to the last
+# function with arity 0 (if any)
+#
+#     f = overload (()              -> 1),
+#                  ((x)             -> x),
+#                  ((x, y)          -> x + y),
+#                  ((x, y, args...) -> f (f x, y), args...)
+#
+# <!-- }}}1 -->
+O.overload = overload = (fs...) ->                              # {{{1
+  d = null; t = {}
+  for f in fs
+    if f.length == 0
+      d = f
+    else if t[f.length]
+      error 'multiple functions with same (non-zero) arity'
+    t[f.length] ||= f
+  (args...) ->
+    for x in [t[args.length], d]
+      return x args... if x
+    error 'no match found for overload'
+                                                      #  <!-- }}}1 -->
+
+
 # multimethods
 # ------------
 

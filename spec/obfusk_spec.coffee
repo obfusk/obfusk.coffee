@@ -25,6 +25,19 @@ describe 'qw', ->
   b = ['foo', 'bar', 'baz', 'qux', 'q2x', 'q3x', 'q4x', 'q5x', 'q6x']
   it 'works', -> expect(O.qw a...).toEqual b
 
+describe 'overload', ->                                         # {{{1
+  f = O.overload (()              -> 1),
+                 ((x)             -> x),
+                 ((x, y)          -> x + y),
+                 ((x, y, args...) -> f (f x, y), args...)
+
+  it '0', expect(f())         .toBe(1)
+  it '1', expect(f(42))       .toBe(42)
+  it '2', expect(f(7,16))     .toBe(23)
+  it '3', expect(f(6,7,8))    .toBe(21)
+  it '5', expect(f(1,1,2,3,5)).toBe(12)
+                                                                # }}}1
+
 describe 'multi', ->                                            # {{{1
   neg = O.multi((x) -> 'default')
     .method ((x) -> typeof x == 'number'),
