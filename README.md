@@ -21,12 +21,16 @@
 ## Examples
 []: {{{1
 
-TODO
-
 []: {{{2
 
 ```coffee
-f = -> 42
+O = require 'obfusk'
+
+O.Maybe.match O.Just(42),
+  Nothing: -> console.log 'Nothing to see here ...'
+  Just: (x) -> console.log "The answer is: #{x.value}"
+
+# ...
 ```
 
 []: }}}2
@@ -44,6 +48,8 @@ f = -> 42
 ## TODO
 []: {{{1
 
+  * build!
+  * examples!
   * more specs/docs?
   * ...
 

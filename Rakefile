@@ -3,6 +3,16 @@ task :spec do
   sh 'jasmine-node --coffee spec/'
 end
 
+desc 'Run specs verbosely'
+task 'spec:verbose' do
+  sh 'jasmine-node --coffee --verbose spec/'
+end
+
+desc 'Run specs verbosely, view w/ less'
+task 'spec:less' do
+  sh 'jasmine-node --coffee --verbose spec/ | less -R'
+end
+
 desc 'Generate docs'
 task :docs do
   sh 'docco -o doc src/*.coffee'
