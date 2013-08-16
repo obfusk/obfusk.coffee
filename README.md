@@ -21,6 +21,9 @@
 ## Examples
 []: {{{1
 
+See http://obfusk.github.io/obfusk.coffee for the annotated source
+with examples.
+
 []: {{{2
 
 ```coffee
@@ -29,8 +32,16 @@ O = require 'obfusk'
 O.match O.Just(42),
   Nothing: -> console.log 'Nothing to see here ...'
   Just: (x) -> console.log "The answer is: #{x.value}"
+# => (console) The answer is 42
 
-# ...
+neg = O.multi((x) -> 'default')
+  .method ((x) -> typeof x == 'number'),
+          ((x) -> -x)
+  .method ((x) -> typeof x == 'boolean'),
+          ((x) -> !x)
+neg 42      # => -42
+neg false   # => true
+neg 'foo'   # => 'default'
 ```
 
 []: }}}2

@@ -77,7 +77,7 @@ O.lazy = lazy = (x) ->                                          # {{{1
 # implementation at the front instead of the back so the predicate
 # will be checked before the existing ones
 #
-#     neg = O.multi((x) -> 'default')
+#     neg = multi((x) -> 'default')
 #       .method ((x) -> typeof x == 'number'),
 #               ((x) -> -x)
 #       .method ((x) -> typeof x == 'boolean'),
