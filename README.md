@@ -2,10 +2,10 @@
 
     File        : README.md
     Maintainer  : Felix C. Stegerman <flx@obfusk.net>
-    Date        : 2013-08-15
+    Date        : 2013-08-16
 
     Copyright   : Copyright (C) 2013  Felix C. Stegerman
-    Version     : v0.0.1-SNAPSHOT
+    Version     : v0.0.2-SNAPSHOT
 
 []: }}}1
 
@@ -37,6 +37,19 @@ O.match O.Just(42),
 
 []: }}}1
 
+## Install
+[]: {{{1
+
+    $ git clone https://github.com/obfusk/obfusk.coffee.git
+    $ cd obfusk.coffee
+    $ npm [-g] install
+
+or
+
+    $ npm [-g] install git+https://github.com/obfusk/obfusk.coffee.git
+
+[]: }}}1
+
 ## Specs & Docs
 []: {{{1
 
@@ -50,6 +63,7 @@ O.match O.Just(42),
 
   * build!
   * examples!
+  * npm!
   * more specs/docs?
   * ...
 
