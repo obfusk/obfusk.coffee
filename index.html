@@ -208,7 +208,7 @@ supplying a predicate and a function; alternatively you can use
 added; also, <code>.methodPre</code> and <code>.withMethodPre</code> add the new
 implementation at the front instead of the back so the predicate
 will be checked before the existing ones</p>
-<pre><code>neg = O.multi((x) -&gt; &#39;default&#39;)
+<pre><code>neg = multi((x) -&gt; &#39;default&#39;)
   .method ((x) -&gt; typeof x == &#39;number&#39;),
           ((x) -&gt; -x)
   .method ((x) -&gt; typeof x == &#39;boolean&#39;),
