@@ -50,10 +50,10 @@ O.lazy = lazy = (x) ->                                          # {{{1
 
 # <!-- -->
 
-# algebraic data type; returns an object with `.type`, `.match`,
-# `.ctor1`, ...; each constructor creates an object using the supplied
-# function, which is extended with `.ctor`, and `.isCtor1`, ...; see
-# Maybe, Either, List
+# algebraic data type; returns an object with `.type`, `.ctor1`, ...;
+# each constructor creates an object using the supplied function,
+# which is extended with `.ctor`, and `.isCtor1`, ...; see Maybe,
+# Either, List
 O.data = data = (ctors = {}) ->                                 # {{{1
   type = {}
   for k, v of ctors
@@ -61,9 +61,11 @@ O.data = data = (ctors = {}) ->                                 # {{{1
       for k2, v2 of ctors
         o["is#{titleCase k2}"] = k == k2
       type[k] = -> U.extend {}, v(arguments...), o
-  type.match = (x, f = {}) -> f[x.ctor]? x
   type.type = type; type
                                                       #  <!-- }}}1 -->
+
+# run the function matching the constructor
+O.match = match = (x, f = {}) -> f[x.ctor]? x
 
 # <!-- -->
 

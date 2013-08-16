@@ -26,7 +26,7 @@
 ```coffee
 O = require 'obfusk'
 
-O.Maybe.match O.Just(42),
+O.match O.Just(42),
   Nothing: -> console.log 'Nothing to see here ...'
   Just: (x) -> console.log "The answer is: #{x.value}"
 

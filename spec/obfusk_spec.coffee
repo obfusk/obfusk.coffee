@@ -72,8 +72,8 @@ describe 'data', ->
       it '!isNothing' , -> expect(y.isNothing)  .toBe false
 
     describe 'match', ->
-      a = O.Maybe.match x, f
-      b = O.Maybe.match y, f
+      a = O.match x, f
+      b = O.match y, f
 
       it 'Nothing'    , -> expect(a)            .toBe 'Nothing'
       it 'Just'       , -> expect(b)            .toBe 'Value: 42'
@@ -86,8 +86,8 @@ describe 'data', ->
     y = O.Either.Right(37)
 
     describe 'match', ->
-      a = O.Either.match x, f
-      b = O.Either.match y, f
+      a = O.match x, f
+      b = O.match y, f
 
       it 'Left' , -> expect(a).toBe 'L: 42'
       it 'Right', -> expect(b).toBe 'R: 37'
@@ -104,8 +104,8 @@ describe 'data', ->
     it 'length' , -> expect(O.List.len(z)).toBe 10
 
     describe 'match', ->
-      a = O.Either.match x, f
-      b = O.Either.match y, f
+      a = O.match x, f
+      b = O.match y, f
 
       it 'Nil' , -> expect(a).toBe 'Nil'
       it 'Cons', -> expect(b).toBe '42, 99'
