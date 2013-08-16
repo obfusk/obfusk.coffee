@@ -44,10 +44,6 @@ O.match O.Just(42),
     $ cd obfusk.coffee
     $ npm [-g] install
 
-or
-
-    $ npm [-g] install git+https://github.com/obfusk/obfusk.coffee.git
-
 []: }}}1
 
 ## Specs & Docs
