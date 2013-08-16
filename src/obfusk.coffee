@@ -53,7 +53,12 @@ O.flen = flen = (f) -> f.arg_length ? f.length
 #     (frev f)(1,2,3) <=> f(3,2,1)
 O.frev = frev = (f) ->
   g = (args...) -> f U.clone(args).reverse()...
-  g.arg_length = f.length; g
+  g.arg_length = flen f; g
+
+# flip first two arguments
+O.flip = flip = (f) ->
+  g = (x, y, args...) -> f y, x, args...
+  g.arg_length = flen f; g
 
 # fix number of function arguments
 #

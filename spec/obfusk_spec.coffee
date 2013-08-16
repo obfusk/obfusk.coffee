@@ -38,6 +38,10 @@ describe 'flen + frev', ->                                      # {{{1
     expect(O.flen (O.frev f)) .toBe 3
                                                                 # }}}1
 
+describe 'flip', ->
+  it 'flips the first two args', ->
+    expect(O.flip((x,y,z) -> [x,y,z]) 2, 1, 3).toEqual [1,2,3]
+
 describe 'fix', ->                                              # {{{1
   f = (a,b,c = 3) -> [a,b,c]
   g = O.fix f, 2
