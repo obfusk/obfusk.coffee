@@ -144,11 +144,11 @@ misc = O.misc ||= {}</pre></div></div>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <p>f.length (or f.arg_length if set)</p>
+              <p>f.length (or f.n_of_args if set)</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>O.flen = <span class="function"><span class="title">flen</span></span> = (f) -&gt; f.arg_length ? f.length</pre></div></div>
+            <div class="content"><div class='highlight'><pre>O.flen = <span class="function"><span class="title">flen</span></span> = (f) -&gt; f.n_of_args ? f.length</pre></div></div>
             
         </li>
         
@@ -159,14 +159,11 @@ misc = O.misc ||= {}</pre></div></div>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <p>reverse function arguments</p>
-<pre><code>(frev f)(1,2,3) &lt;=&gt; f(3,2,1)</code></pre>
+              <p>set f.n_of_args</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>O.frev = <span class="function"><span class="title">frev</span></span> = (f) -&gt;
-  <span class="function"><span class="title">g</span></span> = (args...) -&gt; f U.clone(args).reverse()...
-  g.arg_length = flen f; g</pre></div></div>
+            <div class="content"><div class='highlight'><pre>O.fsetlen = <span class="function"><span class="title">fsetlen</span></span> = (f, n) -&gt; f.n_of_args = n; f</pre></div></div>
             
         </li>
         
@@ -177,13 +174,14 @@ misc = O.misc ||= {}</pre></div></div>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <p>flip first two arguments</p>
+              <p>reverse function arguments</p>
+<pre><code>(frev f)(1,2,3) &lt;=&gt; f(3,2,1)</code></pre>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>O.flip = <span class="function"><span class="title">flip</span></span> = (f) -&gt;
-  <span class="function"><span class="title">g</span></span> = (x, y, args...) -&gt; f y, x, args...
-  g.arg_length = flen f; g</pre></div></div>
+            <div class="content"><div class='highlight'><pre>O.frev = <span class="function"><span class="title">frev</span></span> = (f) -&gt;
+  <span class="function"><span class="title">g</span></span> = (args...) -&gt; f U.clone(args).reverse()...
+  fsetlen g, flen f</pre></div></div>
             
         </li>
         
@@ -194,16 +192,13 @@ misc = O.misc ||= {}</pre></div></div>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <p>fix number of function arguments</p>
-<pre><code>g = fix f, 3  # takes exactly 3 arguments</code></pre>
+              <p>flip first two arguments</p>
 
             </div>
             
-            <div class="content"><div class='highlight'><pre>O.fix = <span class="function"><span class="title">fix</span></span> = (f, n = flen(f)) -&gt;
-  <span class="function"><span class="title">g</span></span> = (args...) -&gt;
-    error <span class="string">"fix: #args != <span class="subst">#{n}</span>"</span> <span class="keyword">if</span> args.length != n
-    f args.slice(<span class="number">0</span>, n)...
-  g.arg_length = n; g</pre></div></div>
+            <div class="content"><div class='highlight'><pre>O.flip = <span class="function"><span class="title">flip</span></span> = (f) -&gt;
+  <span class="function"><span class="title">g</span></span> = (x, y, args...) -&gt; f y, x, args...
+  fsetlen g, flen f</pre></div></div>
             
         </li>
         
@@ -213,6 +208,26 @@ misc = O.misc ||= {}</pre></div></div>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>fix number of function arguments</p>
+<pre><code>g = fix f, 3  # takes exactly 3 arguments</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>O.fix = <span class="function"><span class="title">fix</span></span> = (f, n = flen(f)) -&gt;
+  <span class="function"><span class="title">g</span></span> = (args...) -&gt;
+    error <span class="string">"fix: #args != <span class="subst">#{n}</span>"</span> <span class="keyword">if</span> args.length != n
+    f args.slice(<span class="number">0</span>, n)...
+  fsetlen g, n</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-13">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
               <!-- {{{1 -->
 
@@ -244,11 +259,11 @@ g(2,3,4)()</code></pre>
         </li>
         
         
-        <li id="section-13">
+        <li id="section-14">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-13">&#182;</a>
+                <a class="pilcrow" href="#section-14">&#182;</a>
               </div>
                <!-- }}}1 -->
 
@@ -261,11 +276,11 @@ g(2,3,4)()</code></pre>
         </li>
         
         
-        <li id="section-14">
+        <li id="section-15">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-14">&#182;</a>
+                <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
               <p>partial application</p>
 <pre><code>f = (a,b,c,d) -&gt; [a,b,c,d]
@@ -276,16 +291,16 @@ g 3, 4  # =&gt; [1,2,3,4]</code></pre>
             
             <div class="content"><div class='highlight'><pre>O.partial = <span class="function"><span class="title">partial</span></span> = (f, xs...) -&gt;
   <span class="function"><span class="title">g</span></span> = (ys...) -&gt; f xs.concat(ys)...
-  g.arg_length = flen(f) - xs.length; g</pre></div></div>
+  fsetlen g, flen(f) - xs.length</pre></div></div>
             
         </li>
         
         
-        <li id="section-15">
+        <li id="section-16">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-15">&#182;</a>
+                <a class="pilcrow" href="#section-16">&#182;</a>
               </div>
               <p>partial application, from the right</p>
 <pre><code>f = (a,b,c,d,e=99) -&gt; [a,b,c,d,e]
@@ -298,16 +313,16 @@ h 1, 2  # =&gt; [1,2,3,4,99]</code></pre>
             
             <div class="content"><div class='highlight'><pre>O.rpartial = <span class="function"><span class="title">rpartial</span></span> = (f, xs...) -&gt;
   <span class="function"><span class="title">g</span></span> = (ys...) -&gt; f ys.concat(xs)...
-  g.arg_length = flen(f) - xs.length; g</pre></div></div>
+  fsetlen g, flen(f) - xs.length</pre></div></div>
             
         </li>
         
         
-        <li id="section-16">
+        <li id="section-17">
             <div class="annotation">
               
               <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-16">&#182;</a>
+                <a class="pilcrow" href="#section-17">&#182;</a>
               </div>
               <h2>overloaded arity</h2>
 
@@ -316,11 +331,11 @@ h 1, 2  # =&gt; [1,2,3,4,99]</code></pre>
         </li>
         
         
-        <li id="section-17">
+        <li id="section-18">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-17">&#182;</a>
+                <a class="pilcrow" href="#section-18">&#182;</a>
               </div>
               <!-- {{{1 -->
 
@@ -351,11 +366,11 @@ function with arity 0 (if any)</p>
         </li>
         
         
-        <li id="section-18">
+        <li id="section-19">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-18">&#182;</a>
+                <a class="pilcrow" href="#section-19">&#182;</a>
               </div>
                <!-- }}}1 -->
 
@@ -367,11 +382,11 @@ function with arity 0 (if any)</p>
         </li>
         
         
-        <li id="section-19">
+        <li id="section-20">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-19">&#182;</a>
+                <a class="pilcrow" href="#section-20">&#182;</a>
               </div>
               <!-- {{{1 -->
 
@@ -411,11 +426,11 @@ will be checked before the existing ones</p>
         </li>
         
         
-        <li id="section-20">
+        <li id="section-21">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-20">&#182;</a>
+                <a class="pilcrow" href="#section-21">&#182;</a>
               </div>
                <!-- }}}1 -->
 
@@ -427,11 +442,11 @@ will be checked before the existing ones</p>
         </li>
         
         
-        <li id="section-21">
+        <li id="section-22">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-21">&#182;</a>
+                <a class="pilcrow" href="#section-22">&#182;</a>
               </div>
               <p>is this a lazy object?; see lazy</p>
 
@@ -442,11 +457,11 @@ will be checked before the existing ones</p>
         </li>
         
         
-        <li id="section-22">
+        <li id="section-23">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-22">&#182;</a>
+                <a class="pilcrow" href="#section-23">&#182;</a>
               </div>
               <p>lazy object (thunk)</p>
 <pre><code>a = lazy 42; b = lazy -&gt; 42; c = lazy a
@@ -466,11 +481,11 @@ d = lazy -&gt; console.log &#39;thunk!&#39;; 42
         </li>
         
         
-        <li id="section-23">
+        <li id="section-24">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-23">&#182;</a>
+                <a class="pilcrow" href="#section-24">&#182;</a>
               </div>
                <!-- }}}1 -->
 
@@ -482,11 +497,11 @@ d = lazy -&gt; console.log &#39;thunk!&#39;; 42
         </li>
         
         
-        <li id="section-24">
+        <li id="section-25">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-24">&#182;</a>
+                <a class="pilcrow" href="#section-25">&#182;</a>
               </div>
               <p>algebraic data type; returns an object with <code>.ctor1</code>, ...; each
 constructor creates an object using the supplied function, which is
@@ -501,25 +516,9 @@ Either, List</p>
     <span class="keyword">do</span> (v, o = { ctor: k, type: type }) -&gt;
       <span class="keyword">for</span> k2, v2 <span class="keyword">of</span> ctors
         o[<span class="string">"is<span class="subst">#{titleCase k2}</span>"</span>] = k == k2
-      type[k] = -&gt; U.extend {}, v(arguments...), o
-  type</pre></div></div>
-            
-        </li>
-        
-        
-        <li id="section-25">
-            <div class="annotation">
-              
-              <div class="pilwrap ">
-                <a class="pilcrow" href="#section-25">&#182;</a>
-              </div>
-               <!-- }}}1 -->
-
-<p>run the function matching the constructor</p>
-
-            </div>
-            
-            <div class="content"><div class='highlight'><pre>O.match = <span class="function"><span class="title">match</span></span> = (x, f = {}) -&gt; f[x.ctor]? x</pre></div></div>
+      type[k] = (args...) -&gt; U.extend {}, v(args...), o
+      fsetlen type[k], flen v
+  type.ctors = Object.keys(ctors).sort(); type</pre></div></div>
             
         </li>
         
@@ -527,12 +526,22 @@ Either, List</p>
         <li id="section-26">
             <div class="annotation">
               
-              <div class="pilwrap for-h2">
+              <div class="pilwrap ">
                 <a class="pilcrow" href="#section-26">&#182;</a>
               </div>
-              <h2>Maybe</h2>
+               <!-- }}}1 -->
+
+<p>run the function matching the constructor</p>
+<pre><code>match Just(42),
+  Nothing: -&gt; -1
+  Just: (x) -&gt; x.value * x.value</code></pre>
 
             </div>
+            
+            <div class="content"><div class='highlight'><pre>O.match = <span class="function"><span class="title">match</span></span> = (x, fs = {}) -&gt;
+  <span class="keyword">unless</span> U.isEqual Object.keys(fs).sort(), x.type.ctors
+    error <span class="string">'match: ctors do not match'</span>
+  fs[x.ctor] x</pre></div></div>
             
         </li>
         
@@ -542,6 +551,35 @@ Either, List</p>
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-27">&#182;</a>
+              </div>
+              <p>curried &amp; flipped match</p>
+<pre><code>match_(Nothing: (-&gt; false), Just: ((x) -&gt; true))(Just 42)</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>O.match_ = match_ = curry flip match</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-28">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-28">&#182;</a>
+              </div>
+              <h2>Maybe</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-29">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-29">&#182;</a>
               </div>
               <p>Maybe type: optional value</p>
 
@@ -557,11 +595,11 @@ O.Just    = Just    = Maybe.Just</pre></div></div>
         </li>
         
         
-        <li id="section-28">
+        <li id="section-30">
             <div class="annotation">
               
               <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-28">&#182;</a>
+                <a class="pilcrow" href="#section-30">&#182;</a>
               </div>
               <h2>Either</h2>
 
@@ -570,11 +608,11 @@ O.Just    = Just    = Maybe.Just</pre></div></div>
         </li>
         
         
-        <li id="section-29">
+        <li id="section-31">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-29">&#182;</a>
+                <a class="pilcrow" href="#section-31">&#182;</a>
               </div>
               <p>Either type: value with two possibilities</p>
 
@@ -590,11 +628,11 @@ O.Right = Right = Either.Right</pre></div></div>
         </li>
         
         
-        <li id="section-30">
+        <li id="section-32">
             <div class="annotation">
               
               <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-30">&#182;</a>
+                <a class="pilcrow" href="#section-32">&#182;</a>
               </div>
               <h2>List</h2>
 
@@ -603,11 +641,11 @@ O.Right = Right = Either.Right</pre></div></div>
         </li>
         
         
-        <li id="section-31">
+        <li id="section-33">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-33">&#182;</a>
               </div>
               <p>List type: lazy list</p>
 
@@ -623,11 +661,11 @@ O.Cons  = Cons  = List.Cons</pre></div></div>
         </li>
         
         
-        <li id="section-32">
+        <li id="section-34">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-34">&#182;</a>
               </div>
               <p>create a List from arguments</p>
 <pre><code>list 1, 2, 3</code></pre>
@@ -640,11 +678,11 @@ O.Cons  = Cons  = List.Cons</pre></div></div>
         </li>
         
         
-        <li id="section-33">
+        <li id="section-35">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-35">&#182;</a>
               </div>
               <p>create a list from arguments + tail</p>
 <pre><code>cons 1, 2, 3, list(4, 5, 6)</code></pre>
@@ -659,11 +697,11 @@ O.Cons  = Cons  = List.Cons</pre></div></div>
         </li>
         
         
-        <li id="section-34">
+        <li id="section-36">
             <div class="annotation">
               
               <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-36">&#182;</a>
               </div>
               <h2>List functions</h2>
 
@@ -672,11 +710,11 @@ O.Cons  = Cons  = List.Cons</pre></div></div>
         </li>
         
         
-        <li id="section-35">
+        <li id="section-37">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+                <a class="pilcrow" href="#section-37">&#182;</a>
               </div>
               <p>List each</p>
 <pre><code>List.each ((x) -&gt; console.log x), list(1,2,3)</code></pre>
@@ -690,11 +728,11 @@ O.Cons  = Cons  = List.Cons</pre></div></div>
         </li>
         
         
-        <li id="section-36">
+        <li id="section-38">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-38">&#182;</a>
               </div>
               <p>List to Array</p>
 
@@ -706,11 +744,11 @@ O.Cons  = Cons  = List.Cons</pre></div></div>
         </li>
         
         
-        <li id="section-37">
+        <li id="section-39">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+                <a class="pilcrow" href="#section-39">&#182;</a>
               </div>
               <p>List length</p>
 
@@ -721,11 +759,11 @@ O.Cons  = Cons  = List.Cons</pre></div></div>
         </li>
         
         
-        <li id="section-38">
+        <li id="section-40">
             <div class="annotation">
               
               <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-38">&#182;</a>
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <h2>...</h2>
 
@@ -734,11 +772,11 @@ O.Cons  = Cons  = List.Cons</pre></div></div>
         </li>
         
         
-        <li id="section-39">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
               <p>...</p>
 <!-- vim: set tw=70 sw=2 sts=2 et fdm=marker : -->
