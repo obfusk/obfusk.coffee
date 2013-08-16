@@ -94,6 +94,30 @@ describe 'rpartial', ->                                         # {{{1
     expect(h 1, 2).toEqual [1,2,3,4,99]
                                                                 # }}}1
 
+describe 'compose', ->                                          # {{{1
+  f = (x) -> x + 42
+  g = (x) -> x * 2
+  h = (a,b,c) -> a + b + c
+  it 'composes functions', ->
+    expect(O.compose(f,g,h)(1,2,3)).toBe 54
+                                                                # }}}1
+
+describe 'pipeline', ->                                         # {{{1
+  f = (x,y) -> [x,y]
+  g = (x) -> U.clone(x).reverse()
+  h = (x) -> [1].concat x
+  it 'piplelines functions', ->
+    expect(O.pipeline(f,g,h)(42,37)).toEqual [1,37,42]
+                                                                # }}}1
+
+describe 'iterate', ->                                          # {{{1
+  len = (xs) ->
+    O.iterate (recur, ys = xs, n = 0) ->
+      O.match ys, Nil: (-> n), Cons: ((x) -> recur ys.tail(), n+1)
+  it 'loops over a list', ->
+    expect(len O.list 1, 2, 3).toBe 3
+                                                                # }}}1
+
 describe 'overload', ->                                         # {{{1
   f = O.overload (()              -> 1),
                  ((x)             -> x),

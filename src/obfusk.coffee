@@ -123,6 +123,34 @@ O.rpartial = rpartial = (f, xs...) ->
   fsetlen g, flen(f) - xs.length
 
 
+# composition
+# -----------
+
+# compose functions
+#
+#     compose(f,g,h)(a,b,c) <=> f(g(h(a,b,c)))
+O.compose = compose = U.compose
+
+# pipeline functions (reverse compose)
+#
+#     pipeline(f,g,h)(a,b,c) <=> h(g(f(a,b,c)))
+O.pipeline = pipeline = frev compose
+
+
+# recursion
+# ---------
+
+# loop/recur-style recursion
+#
+#     len = (xs) ->
+#       iterate (recur, ys = xs, n = 0) ->
+#         match ys, Nil: (-> n), Cons: ((x) -> recur ys.tail(), n+1)
+O.iterate = iterate = (f) ->
+  as = []; recur = (bs...) -> as = bs; recur
+  loop
+    return x if (x = f recur, as...) != recur
+
+
 # overloaded arity
 # ----------------
 
