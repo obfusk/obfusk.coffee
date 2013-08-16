@@ -62,12 +62,14 @@ describe 'data', ->
 
     describe 'Nothing', ->
       it 'ctor'       , -> expect(x.ctor)       .toBe 'Nothing'
+      it 'type'       , -> expect(x.type)       .toBe O.Maybe
       it '!isJust'    , -> expect(x.isJust)     .toBe false
       it 'isNothing'  , -> expect(x.isNothing)  .toBe true
 
     describe 'Just', ->
       it 'value'      , -> expect(y.value)      .toBe 42
       it 'ctor'       , -> expect(y.ctor)       .toBe 'Just'
+      it 'type'       , -> expect(y.type)       .toBe O.Maybe
       it 'isJust'     , -> expect(y.isJust)     .toBe true
       it '!isNothing' , -> expect(y.isNothing)  .toBe false
 

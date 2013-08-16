@@ -106,18 +106,18 @@ _multi = (fs, def) ->                                           # {{{1
 # ADTs
 # ----
 
-# algebraic data type; returns an object with `.type`, `.ctor1`, ...;
-# each constructor creates an object using the supplied function,
-# which is extended with `.ctor`, and `.isCtor1`, ...; see Maybe,
+# algebraic data type; returns an object with `.ctor1`, ...; each
+# constructor creates an object using the supplied function, which is
+# extended with `.type`, `.ctor`, and `.isCtor1`, ...; see Maybe,
 # Either, List
 O.data = data = (ctors = {}) ->                                 # {{{1
   type = {}
   for k, v of ctors
-    do (v, o = { ctor: k }) ->
+    do (v, o = { ctor: k, type: type }) ->
       for k2, v2 of ctors
         o["is#{titleCase k2}"] = k == k2
       type[k] = -> U.extend {}, v(arguments...), o
-  type.type = type; type
+  type
                                                       #  <!-- }}}1 -->
 
 # run the function matching the constructor
