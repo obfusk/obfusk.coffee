@@ -22,3 +22,14 @@ desc 'Cleanup'
 task :clean do
   sh 'rm -rf doc/ node_modules/ src/*.js'
 end
+
+desc 'Update Pages'
+task :pages do
+  sh 'rake clean && rake docs'
+  sh 'git checkout gh-pages'
+  sh 'rake cpdocs'
+  sh 'git status'
+  puts 'press enter to continue ...'; $stdin.readline
+  sh 'git commit -am ...'
+  sh 'git checkout master'
+end
