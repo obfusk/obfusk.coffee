@@ -31,13 +31,16 @@
 
 <pre><code>File        : obfusk.coffee
 Maintainer  : Felix C. Stegerman &lt;flx@obfusk.net&gt;
-Date        : 2013-08-15
+Date        : 2013-08-16
 
 Copyright   : Copyright (C) 2013  Felix C. Stegerman
 Licence     : GPLv2 or EPLv1</code></pre>
 <!-- }}}1 -->
 
-<p>underscore + exports + misc</p>
+<p>functional programming library for js/coffee</p>
+<p><a href="https://github.com/obfusk/obfusk.coffee">https://github.com/obfusk/obfusk.coffee</a></p>
+<p>License: GPLv2 or EPLv1.</p>
+<h2>underscore + exports + misc</h2>
 
             </div>
             
@@ -51,11 +54,10 @@ misc = O.misc ||= {}</pre></div></div>
         <li id="section-2">
             <div class="annotation">
               
-              <div class="pilwrap ">
+              <div class="pilwrap for-h2">
                 <a class="pilcrow" href="#section-2">&#182;</a>
               </div>
-              <!-- -->
-
+              <h2>miscellaneous</h2>
 <p>make first char of string uppercase</p>
 <pre><code>misc.titleCase &#39;fOO&#39; # =&gt; &#39;FOO&#39;</code></pre>
 
@@ -87,11 +89,10 @@ misc = O.misc ||= {}</pre></div></div>
         <li id="section-4">
             <div class="annotation">
               
-              <div class="pilwrap ">
+              <div class="pilwrap for-h2">
                 <a class="pilcrow" href="#section-4">&#182;</a>
               </div>
-              <!-- -->
-
+              <h2>lazy</h2>
 <p>is this a lazy object?; see lazy</p>
 
             </div>
@@ -133,8 +134,8 @@ d = lazy -&gt; console.log &#39;thunk!&#39;; 42
               </div>
                <!-- }}}1 -->
 
-<!-- -->
 
+<h2>ADTs</h2>
 <p>algebraic data type; returns an object with <code>.type</code>, <code>.ctor1</code>, ...;
 each constructor creates an object using the supplied function,
 which is extended with <code>.ctor</code>, and <code>.isCtor1</code>, ...; see Maybe,
@@ -174,11 +175,10 @@ Either, List</p>
         <li id="section-8">
             <div class="annotation">
               
-              <div class="pilwrap ">
+              <div class="pilwrap for-h2">
                 <a class="pilcrow" href="#section-8">&#182;</a>
               </div>
-              <!-- -->
-
+              <h2>Maybe</h2>
 <p>Maybe type: optional value</p>
 
             </div>
@@ -196,11 +196,10 @@ O.Just    = Just    = Maybe.Just</pre></div></div>
         <li id="section-9">
             <div class="annotation">
               
-              <div class="pilwrap ">
+              <div class="pilwrap for-h2">
                 <a class="pilcrow" href="#section-9">&#182;</a>
               </div>
-              <!-- -->
-
+              <h2>Either</h2>
 <p>Either type: value with two possibilities</p>
 
             </div>
@@ -218,11 +217,10 @@ O.Right = Right = Either.Right</pre></div></div>
         <li id="section-10">
             <div class="annotation">
               
-              <div class="pilwrap ">
+              <div class="pilwrap for-h2">
                 <a class="pilcrow" href="#section-10">&#182;</a>
               </div>
-              <!-- -->
-
+              <h2>List</h2>
 <p>List type: lazy list</p>
 
             </div>
@@ -243,9 +241,7 @@ O.Cons  = Cons  = List.Cons</pre></div></div>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-11">&#182;</a>
               </div>
-              <!-- -->
-
-<p>create a List from arguments</p>
+              <p>create a List from arguments</p>
 <pre><code>list 1, 2, 3</code></pre>
 
             </div>
@@ -259,10 +255,11 @@ O.Cons  = Cons  = List.Cons</pre></div></div>
         <li id="section-12">
             <div class="annotation">
               
-              <div class="pilwrap ">
+              <div class="pilwrap for-h2">
                 <a class="pilcrow" href="#section-12">&#182;</a>
               </div>
-              <p>List each</p>
+              <h2>List functions</h2>
+<p>List each</p>
 <pre><code>List.each ((x) -&gt; console.log x), list(1,2,3)</code></pre>
 
             </div>
@@ -308,11 +305,10 @@ O.Cons  = Cons  = List.Cons</pre></div></div>
         <li id="section-15">
             <div class="annotation">
               
-              <div class="pilwrap ">
+              <div class="pilwrap for-h2">
                 <a class="pilcrow" href="#section-15">&#182;</a>
               </div>
-              <!-- -->
-
+              <h2>...</h2>
 <p>...</p>
 <!-- vim: set tw=70 sw=2 sts=2 et fdm=marker : -->
 
