@@ -259,9 +259,9 @@ will be checked before the existing ones</p>
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-13">&#182;</a>
               </div>
-              <p>algebraic data type; returns an object with <code>.type</code>, <code>.ctor1</code>, ...;
-each constructor creates an object using the supplied function,
-which is extended with <code>.ctor</code>, and <code>.isCtor1</code>, ...; see Maybe,
+              <p>algebraic data type; returns an object with <code>.ctor1</code>, ...; each
+constructor creates an object using the supplied function, which is
+extended with <code>.type</code>, <code>.ctor</code>, and <code>.isCtor1</code>, ...; see Maybe,
 Either, List</p>
 
             </div>
@@ -269,11 +269,11 @@ Either, List</p>
             <div class="content"><div class='highlight'><pre>O.data = <span class="function"><span class="title">data</span></span> = (ctors = {}) -&gt;                                 <span class="comment"># {{{1</span>
   type = {}
   <span class="keyword">for</span> k, v <span class="keyword">of</span> ctors
-    <span class="keyword">do</span> (v, o = { ctor: k }) -&gt;
+    <span class="keyword">do</span> (v, o = { ctor: k, type: type }) -&gt;
       <span class="keyword">for</span> k2, v2 <span class="keyword">of</span> ctors
         o[<span class="string">"is<span class="subst">#{titleCase k2}</span>"</span>] = k == k2
       type[k] = -&gt; U.extend {}, v(arguments...), o
-  type.type = type; type</pre></div></div>
+  type</pre></div></div>
             
         </li>
         
