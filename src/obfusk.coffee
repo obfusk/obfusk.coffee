@@ -193,7 +193,16 @@ O.Cons  = Cons  = List.Cons
 #
 #     list 1, 2, 3
 O.list = list = (x, xt...) ->
-  if arguments.length == 0 then Nil() else Cons x, lazy -> list xt...
+  if arguments.length == 0 then Nil() else Cons x, -> list xt...
+
+
+# create a list from arguments + tail
+#
+#     cons 1, 2, 3, list(4, 5, 6)
+O.cons = cons = (xs..., ys) ->
+  for x in U.clone(xs).reverse()
+    ys = Cons x, ys
+  ys
 
 
 # List functions
@@ -204,7 +213,7 @@ O.list = list = (x, xt...) ->
 #     List.each ((x) -> console.log x), list(1,2,3)
 List.each = (f, xs) ->
   loop
-    return if xs.isNil; f(xs.head); xs = xs.tail()
+    return if xs.isNil; f xs.head; xs = xs.tail()
 
 # List to Array
 List.toArray = (xs) ->

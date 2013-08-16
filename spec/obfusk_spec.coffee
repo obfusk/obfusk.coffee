@@ -91,65 +91,70 @@ describe 'lazy', ->                                             # {{{1
       expect(x.length).toBe 1
                                                                 # }}}1
 
-describe 'data', ->
-  describe 'Maybe', ->                                          # {{{1
-    f =
-      Nothing: -> 'Nothing'
-      Just: (x) -> "Value: #{x.value}"
-    x = O.Maybe.Nothing()
-    y = O.Maybe.Just(42)
+describe 'Maybe', ->                                            # {{{1
+  f =
+    Nothing: -> 'Nothing'
+    Just: (x) -> "Value: #{x.value}"
+  x = O.Maybe.Nothing()
+  y = O.Maybe.Just(42)
 
-    describe 'Nothing', ->
-      it 'ctor'       , -> expect(x.ctor)       .toBe 'Nothing'
-      it 'type'       , -> expect(x.type)       .toBe O.Maybe
-      it '!isJust'    , -> expect(x.isJust)     .toBe false
-      it 'isNothing'  , -> expect(x.isNothing)  .toBe true
+  describe 'Nothing', ->
+    it 'ctor'       , -> expect(x.ctor)       .toBe 'Nothing'
+    it 'type'       , -> expect(x.type)       .toBe O.Maybe
+    it '!isJust'    , -> expect(x.isJust)     .toBe false
+    it 'isNothing'  , -> expect(x.isNothing)  .toBe true
 
-    describe 'Just', ->
-      it 'value'      , -> expect(y.value)      .toBe 42
-      it 'ctor'       , -> expect(y.ctor)       .toBe 'Just'
-      it 'type'       , -> expect(y.type)       .toBe O.Maybe
-      it 'isJust'     , -> expect(y.isJust)     .toBe true
-      it '!isNothing' , -> expect(y.isNothing)  .toBe false
+  describe 'Just', ->
+    it 'value'      , -> expect(y.value)      .toBe 42
+    it 'ctor'       , -> expect(y.ctor)       .toBe 'Just'
+    it 'type'       , -> expect(y.type)       .toBe O.Maybe
+    it 'isJust'     , -> expect(y.isJust)     .toBe true
+    it '!isNothing' , -> expect(y.isNothing)  .toBe false
 
-    describe 'match', ->
-      a = O.match x, f
-      b = O.match y, f
+  describe 'match', ->
+    a = O.match x, f
+    b = O.match y, f
 
-      it 'Nothing'    , -> expect(a)            .toBe 'Nothing'
-      it 'Just'       , -> expect(b)            .toBe 'Value: 42'
+    it 'Nothing'    , -> expect(a)            .toBe 'Nothing'
+    it 'Just'       , -> expect(b)            .toBe 'Value: 42'
                                                                 # }}}1
-  describe 'Either', ->                                         # {{{1
-    f =
-      Left:  (x) -> "L: #{x.value}"
-      Right: (x) -> "R: #{x.value}"
-    x = O.Either.Left(42)
-    y = O.Either.Right(37)
 
-    describe 'match', ->
-      a = O.match x, f
-      b = O.match y, f
+describe 'Either', ->                                           # {{{1
+  f =
+    Left:  (x) -> "L: #{x.value}"
+    Right: (x) -> "R: #{x.value}"
+  x = O.Either.Left(42)
+  y = O.Either.Right(37)
 
-      it 'Left' , -> expect(a).toBe 'L: 42'
-      it 'Right', -> expect(b).toBe 'R: 37'
+  describe 'match', ->
+    a = O.match x, f
+    b = O.match y, f
+
+    it 'Left' , -> expect(a).toBe 'L: 42'
+    it 'Right', -> expect(b).toBe 'R: 37'
                                                                 # }}}1
-  describe 'List', ->                                           # {{{1
-    f =
-      Nil: -> 'Nil'
-      Cons: (x) -> O.List.toArray(x).join ', '
-    x = O.List.Nil()
-    y = O.List.Cons(42, O.list(99))
-    z = O.list(U.range(10)...)
 
-    it 'toArray', -> expect(O.List.toArray(z)).toEqual U.range(10)
-    it 'length' , -> expect(O.List.len(z)).toBe 10
+describe 'List', ->                                             # {{{1
+  f =
+    Nil: -> 'Nil'
+    Cons: (x) -> O.List.toArray(x).join ', '
+  x = O.List.Nil()
+  y = O.List.Cons(42, O.list(99))
+  z = O.list(U.range(10)...)
 
-    describe 'match', ->
-      a = O.match x, f
-      b = O.match y, f
+  a = O.cons(1,2,3,z)
+  b = [1,2,3].concat U.range 10
 
-      it 'Nil' , -> expect(a).toBe 'Nil'
-      it 'Cons', -> expect(b).toBe '42, 99'
+  it 'toArray', -> expect(O.List.toArray(z)).toEqual U.range(10)
+  it 'length' , -> expect(O.List.len(z)).toBe 10
+  it 'cons',    -> expect(O.List.toArray(a)).toEqual b
+
+  describe 'match', ->
+    c = O.match x, f
+    d = O.match y, f
+
+    it 'Nil' , -> expect(c).toBe 'Nil'
+    it 'Cons', -> expect(d).toBe '42, 99'
                                                                 # }}}1
 
 # ...
