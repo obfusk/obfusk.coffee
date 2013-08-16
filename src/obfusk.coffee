@@ -15,14 +15,16 @@
 #
 # License: GPLv2 or EPLv1.
 
-# ## underscore + exports + misc
+# underscore + exports + misc
+# ---------------------------
 
 U = this._ || require 'underscore'
 O = exports ? this.obfusk ||= {}
 misc = O.misc ||= {}
 
 
-# ## miscellaneous
+# miscellaneous
+# -------------
 
 # make first char of string uppercase
 #
@@ -36,8 +38,12 @@ misc.titleCase = titleCase = (x) ->
 O.qw = qw = (xs...) ->
   xs.join(' ').replace(/,/g,' ').split(/\s+/)
 
+# throw Error
+O.error = error = (x) -> throw new Error x
 
-# ## lazy
+
+# lazy
+# ----
 
 # is this a lazy object?; see lazy
 O.isLazy = isLazy = (x) -> x.lazy == lazy
@@ -58,7 +64,47 @@ O.lazy = lazy = (x) ->                                          # {{{1
                                                       #  <!-- }}}1 -->
 
 
-# ## ADTs
+# multimethods
+# ------------
+
+# <!-- {{{1 -->
+#
+# creates a multimethod with optional default; you can add a new
+# method implementation to an existing multimethod with `.method`,
+# supplying a predicate and a function; alternatively you can use
+# `.withMethod` to create a new multimethod with the implementation
+# added; also, `.methodPre` and `.withMethodPre` add the new
+# implementation at the front instead of the back so the predicate
+# will be checked before the existing ones
+#
+#     neg = O.multi((x) -> 'default')
+#       .method ((x) -> typeof x == 'number'),
+#               ((x) -> -x)
+#       .method ((x) -> typeof x == 'boolean'),
+#               ((x) -> !x)
+#
+# <!-- }}}1 -->
+O.multi = multi = (f = null) -> _multi [], f
+
+_multi = (fs, def) ->                                           # {{{1
+  find = (args...) ->
+    for f in fs
+      return f.f if f.p args...
+    return def
+  g = (args...) ->
+    if (f = find(args...))? then f args...
+    else error 'no match found for multimethod'
+  g.find          = find
+  g.method        = (p, f) -> fs.push     p: p, f: f; g
+  g.methodPre     = (p, f) -> fs.unshift  p: p, f: f; g
+  g.withMethod    = (p, f) -> _multi fs.concat([p: p, f: f]), def
+  g.withMethodPre = (p, f) -> _multi [p: p, f: f].concat(fs), def
+  g
+                                                      #  <!-- }}}1 -->
+
+
+# ADTs
+# ----
 
 # algebraic data type; returns an object with `.type`, `.ctor1`, ...;
 # each constructor creates an object using the supplied function,
@@ -78,7 +124,8 @@ O.data = data = (ctors = {}) ->                                 # {{{1
 O.match = match = (x, f = {}) -> f[x.ctor]? x
 
 
-# ## Maybe
+# Maybe
+# -----
 
 # Maybe type: optional value
 O.Maybe = Maybe = data
@@ -89,7 +136,8 @@ O.Nothing = Nothing = Maybe.Nothing
 O.Just    = Just    = Maybe.Just
 
 
-# ## Either
+# Either
+# ------
 
 # Either type: value with two possibilities
 O.Either = Either = data
@@ -100,7 +148,8 @@ O.Left  = Left  = Either.Left
 O.Right = Right = Either.Right
 
 
-# ## List
+# List
+# ----
 
 # List type: lazy list
 O.List = List = data
@@ -117,7 +166,8 @@ O.list = list = (x, xt...) ->
   if arguments.length == 0 then Nil() else Cons x, lazy -> list xt...
 
 
-# ## List functions
+# List functions
+# --------------
 
 # List each
 #
@@ -134,7 +184,8 @@ List.toArray = (xs) ->
 List.len = (xs) -> n = 0; List.each (-> ++n), xs; n
 
 
-# ## ...
+# ...
+# ---
 
 # ...
 
