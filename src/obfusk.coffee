@@ -45,20 +45,23 @@ O.error = error = (x) -> throw new Error x
 # currying & partial application
 # --------
 
-# f.length (or f.arg_length if set)
-O.flen = flen = (f) -> f.arg_length ? f.length
+# f.length (or f.n_of_args if set)
+O.flen = flen = (f) -> f.n_of_args ? f.length
+
+# set f.n_of_args
+O.fsetlen = fsetlen = (f, n) -> f.n_of_args = n; f
 
 # reverse function arguments
 #
 #     (frev f)(1,2,3) <=> f(3,2,1)
 O.frev = frev = (f) ->
   g = (args...) -> f U.clone(args).reverse()...
-  g.arg_length = flen f; g
+  fsetlen g, flen f
 
 # flip first two arguments
 O.flip = flip = (f) ->
   g = (x, y, args...) -> f y, x, args...
-  g.arg_length = flen f; g
+  fsetlen g, flen f
 
 # fix number of function arguments
 #
@@ -67,7 +70,7 @@ O.fix = fix = (f, n = flen(f)) ->
   g = (args...) ->
     error "fix: #args != #{n}" if args.length != n
     f args.slice(0, n)...
-  g.arg_length = n; g
+  fsetlen g, n
 
 # <!-- {{{1 -->
 #
@@ -106,7 +109,7 @@ O.rcurry = rcurry = (f, n, strict) -> curry frev(f), n, strict, false
 #     g 3, 4  # => [1,2,3,4]
 O.partial = partial = (f, xs...) ->
   g = (ys...) -> f xs.concat(ys)...
-  g.arg_length = flen(f) - xs.length; g
+  fsetlen g, flen(f) - xs.length
 
 # partial application, from the right
 #
@@ -117,7 +120,7 @@ O.partial = partial = (f, xs...) ->
 #     h 1, 2  # => [1,2,3,4,99]
 O.rpartial = rpartial = (f, xs...) ->
   g = (ys...) -> f ys.concat(xs)...
-  g.arg_length = flen(f) - xs.length; g
+  fsetlen g, flen(f) - xs.length
 
 
 # overloaded arity
@@ -224,12 +227,25 @@ O.data = data = (ctors = {}) ->                                 # {{{1
     do (v, o = { ctor: k, type: type }) ->
       for k2, v2 of ctors
         o["is#{titleCase k2}"] = k == k2
-      type[k] = -> U.extend {}, v(arguments...), o
-  type
+      type[k] = (args...) -> U.extend {}, v(args...), o
+      fsetlen type[k], flen v
+  type.ctors = Object.keys(ctors).sort(); type
                                                       #  <!-- }}}1 -->
 
 # run the function matching the constructor
-O.match = match = (x, f = {}) -> f[x.ctor]? x
+#
+#     match Just(42),
+#       Nothing: -> -1
+#       Just: (x) -> x.value * x.value
+O.match = match = (x, fs = {}) ->
+  unless U.isEqual Object.keys(fs).sort(), x.type.ctors
+    error 'match: ctors do not match'
+  fs[x.ctor] x
+
+# curried & flipped match
+#
+#     match_(Nothing: (-> false), Just: ((x) -> true))(Just 42)
+O.match_ = match_ = curry flip match
 
 
 # Maybe
@@ -272,7 +288,6 @@ O.Cons  = Cons  = List.Cons
 #     list 1, 2, 3
 O.list = list = (x, xt...) ->
   if arguments.length == 0 then Nil() else Cons x, -> list xt...
-
 
 # create a list from arguments + tail
 #

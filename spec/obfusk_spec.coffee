@@ -29,7 +29,7 @@ describe 'qw', ->
 describe 'error', ->
   it 'throws an Error', -> expect(-> O.error 'foo').toThrow('foo')
 
-describe 'flen + frev', ->                                      # {{{1
+describe 'flen + fsetlen + frev', ->                            # {{{1
   f = (a,b,c) -> [a,b,c]
   it 'frev reverses the arguments of a function', ->
     expect(O.frev(f) 1,2,3).toEqual [3,2,1]
@@ -182,9 +182,11 @@ describe 'Maybe', ->                                            # {{{1
   describe 'match', ->
     a = O.match x, f
     b = O.match y, f
+    c = O.match_(f) y
 
     it 'Nothing'    , -> expect(a)            .toBe 'Nothing'
     it 'Just'       , -> expect(b)            .toBe 'Value: 42'
+    it 'Just (_)'   , -> expect(c)            .toBe 'Value: 42'
                                                                 # }}}1
 
 describe 'Either', ->                                           # {{{1
