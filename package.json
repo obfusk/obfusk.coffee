@@ -3,7 +3,7 @@
   "homepage"        : "https://github.com/obfusk/obfusk.coffee",
   "description"     : "functional programming library for js/coffee",
 
-  "version"         : "0.0.1-SNAPSHOT",
+  "version"         : "0.0.2-SNAPSHOT",
   "author"          : "Felix C. Stegerman <flx@obfusk.net>",
 
   "keywords"        : [ "util", "functional" ],
