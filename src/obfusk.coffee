@@ -42,6 +42,79 @@ O.qw = qw = (xs...) ->
 O.error = error = (x) -> throw new Error x
 
 
+# currying & partial application
+# --------
+
+# f.length (or f.arg_length if set)
+O.flen = flen = (f) -> f.arg_length ? f.length
+
+# reverse function arguments
+#
+#     (frev f)(1,2,3) <=> f(3,2,1)
+O.frev = frev = (f) ->
+  g = (args...) -> f U.clone(args).reverse()...
+  g.arg_length = f.length; g
+
+# fix number of function arguments
+#
+#     g = fix f, 3  # takes exactly 3 arguments
+O.fix = fix = (f, n = flen(f)) ->
+  g = (args...) ->
+    error "fix: #args != #{n}" if args.length != n
+    f args.slice(0, n)...
+  g.arg_length = n; g
+
+# <!-- {{{1 -->
+#
+# curry a function; the curried function take at least one argument at
+# a time, until it has either received n arguments in total, or
+# receives no arguments (if noargs = true); except, if strict = true,
+# then the curried function takes exactly one argument at a time
+#
+#     f = (a,b,c,d=88,e=99) -> a + b * c / d - e
+#     g = curry f
+#     g(1)(2,3)(4)(5)
+#     g(2,3,4)()
+#
+# <!-- }}}1 -->
+O.curry = curry = (f, n = flen(f), strict = false, noargs = true) ->
+  _curry f, n, strict, noargs, []
+
+_curry = (f, n, strict, noargs, xs) ->                          # {{{1
+  g = (ys...) ->
+    error 'curry: unary function' if strict && ys.length != 1
+    zs = xs.concat ys
+    if (noargs && ys.length == 0) || zs.length >= n
+      f zs...
+    else
+      _curry f, n, strict, noargs, zs
+  g.curried = curry; g
+                                                      #  <!-- }}}1 -->
+
+# curry + frev (noargs = false)
+O.rcurry = rcurry = (f, n, strict) -> curry frev(f), n, strict, false
+
+# partial application
+#
+#     f = (a,b,c,d) -> [a,b,c,d]
+#     g = partial f, 1, 2
+#     g 3, 4  # => [1,2,3,4]
+O.partial = partial = (f, xs...) ->
+  g = (ys...) -> f xs.concat(ys)...
+  g.arg_length = flen(f) - xs.length; g
+
+# partial application, from the right
+#
+#     f = (a,b,c,d,e=99) -> [a,b,c,d,e]
+#     g = rpartial f, 3, 4, 88
+#     h = rpartial (fix f, 4), 3, 4
+#     g 1, 2  # => [1,2,3,4,88]
+#     h 1, 2  # => [1,2,3,4,99]
+O.rpartial = rpartial = (f, xs...) ->
+  g = (ys...) -> f ys.concat(xs)...
+  g.arg_length = flen(f) - xs.length; g
+
+
 # overloaded arity
 # ----------------
 
@@ -60,15 +133,15 @@ O.error = error = (x) -> throw new Error x
 O.overload = overload = (fs...) ->                              # {{{1
   d = null; t = {}
   for f in fs
-    if f.length == 0
+    if flen(f) == 0
       d = f
-    else if t[f.length]
-      error 'multiple functions with same (non-zero) arity'
-    t[f.length] ||= f
+    else if t[flen f]
+      error 'overload: multiple functions with same (non-zero) arity'
+    t[flen f] ||= f
   (args...) ->
     for x in [t[args.length], d]
       return x args... if x
-    error 'no match found for overload'
+    error 'overload: no match found'
                                                       #  <!-- }}}1 -->
 
 
@@ -101,7 +174,7 @@ _multi = (fs, def) ->                                           # {{{1
     return def
   g = (args...) ->
     if (f = find(args...))? then f args...
-    else error 'no match found for multimethod'
+    else error 'multi: no match found'
   g.find          = find
   g.method        = (p, f) -> fs.push     p: p, f: f; g
   g.methodPre     = (p, f) -> fs.unshift  p: p, f: f; g
