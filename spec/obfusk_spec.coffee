@@ -25,6 +25,32 @@ describe 'qw', ->
   b = ['foo', 'bar', 'baz', 'qux', 'q2x', 'q3x', 'q4x', 'q5x', 'q6x']
   it 'works', -> expect(O.qw a...).toEqual b
 
+describe 'multi', ->                                            # {{{1
+  neg = O.multi((x) -> 'default')
+    .method ((x) -> typeof x == 'number'),
+            ((x) -> -x)
+    .method ((x) -> typeof x == 'boolean'),
+            ((x) -> !x)
+    .methodPre ((x) -> x == 37),
+               ((x) -> 73)
+  neg2 = neg
+    .withMethod ((x) -> x == 42),
+                ((x) -> 'not the answer')
+    .withMethod ((x) -> typeof x == 'string'),
+                ((x) -> '-' + x)
+  neg3 = neg
+    .withMethodPre ((x) -> x == 42),
+                   ((x) -> 'not the answer')
+
+  it 'number'         , -> expect(neg(42))    .toBe -42
+  it 'boolean'        , -> expect(neg(false)) .toBe true
+  it 'default'        , -> expect(neg('oops')).toBe 'default'
+  it 'methodPre'      , -> expect(neg(37))    .toBe 73
+  it 'withMethod ign' , -> expect(neg2(42))   .toBe -42
+  it 'withMethod ok'  , -> expect(neg2('foo')).toBe '-foo'
+  it 'withMethodPre'  , -> expect(neg3(42))   .toBe 'not the answer'
+                                                                # }}}1
+
 describe 'lazy', ->                                             # {{{1
   a = O.lazy 42
   b = O.lazy -> 42
@@ -111,32 +137,6 @@ describe 'data', ->
 
       it 'Nil' , -> expect(a).toBe 'Nil'
       it 'Cons', -> expect(b).toBe '42, 99'
-                                                                # }}}1
-
-describe 'multi', ->                                            # {{{1
-  neg = O.multi((x) -> 'default')
-    .method ((x) -> typeof x == 'number'),
-            ((x) -> -x)
-    .method ((x) -> typeof x == 'boolean'),
-            ((x) -> !x)
-    .methodPre ((x) -> x == 37),
-               ((x) -> 73)
-  neg2 = neg
-    .withMethod ((x) -> x == 42),
-                ((x) -> 'not the answer')
-    .withMethod ((x) -> typeof x == 'string'),
-                ((x) -> '-' + x)
-  neg3 = neg
-    .withMethodPre ((x) -> x == 42),
-                   ((x) -> 'not the answer')
-
-  it 'number'         , -> expect(neg(42))    .toBe -42
-  it 'boolean'        , -> expect(neg(false)) .toBe true
-  it 'default'        , -> expect(neg('oops')).toBe 'default'
-  it 'methodPre'      , -> expect(neg(37))    .toBe 73
-  it 'withMethod ign' , -> expect(neg2(42))   .toBe -42
-  it 'withMethod ok'  , -> expect(neg2('foo')).toBe '-foo'
-  it 'withMethodPre'  , -> expect(neg3(42))   .toBe 'not the answer'
                                                                 # }}}1
 
 # ...

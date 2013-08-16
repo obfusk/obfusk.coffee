@@ -42,28 +42,6 @@ O.qw = qw = (xs...) ->
 O.error = error = (x) -> throw new Error x
 
 
-# lazy
-# ----
-
-# is this a lazy object?; see lazy
-O.isLazy = isLazy = (x) -> x.lazy == lazy
-
-# lazy object (thunk)
-#
-#     a = lazy 42; b = lazy -> 42; c = lazy a
-#     d = lazy -> console.log 'thunk!'; 42
-#     [a(),a(),b(),c(),d(),d()]
-#     # => [42,42,42,42,42]; console.log is called only once
-#
-O.lazy = lazy = (x) ->                                          # {{{1
-  return x if isLazy x
-  f = if U.isFunction x then x else -> x
-  v = null; e = false
-  g = -> (v = f(); e = true) unless e; v
-  g.lazy = lazy; g
-                                                      #  <!-- }}}1 -->
-
-
 # multimethods
 # ------------
 
@@ -100,6 +78,28 @@ _multi = (fs, def) ->                                           # {{{1
   g.withMethod    = (p, f) -> _multi fs.concat([p: p, f: f]), def
   g.withMethodPre = (p, f) -> _multi [p: p, f: f].concat(fs), def
   g
+                                                      #  <!-- }}}1 -->
+
+
+# lazy
+# ----
+
+# is this a lazy object?; see lazy
+O.isLazy = isLazy = (x) -> x.lazy == lazy
+
+# lazy object (thunk)
+#
+#     a = lazy 42; b = lazy -> 42; c = lazy a
+#     d = lazy -> console.log 'thunk!'; 42
+#     [a(),a(),b(),c(),d(),d()]
+#     # => [42,42,42,42,42]; console.log is called only once
+#
+O.lazy = lazy = (x) ->                                          # {{{1
+  return x if isLazy x
+  f = if U.isFunction x then x else -> x
+  v = null; e = false
+  g = -> (v = f(); e = true) unless e; v
+  g.lazy = lazy; g
                                                       #  <!-- }}}1 -->
 
 
