@@ -569,7 +569,7 @@ d = lazy -&gt; console.log &#39;thunk!&#39;; 42
                <!-- }}}1 -->
 
 
-<h2>ADTs</h2>
+<h2>functor, monad, monadplus, ...</h2>
 
             </div>
             
@@ -581,6 +581,164 @@ d = lazy -&gt; console.log &#39;thunk!&#39;; 42
               
               <div class="pilwrap ">
                 <a class="pilcrow" href="#section-30">&#182;</a>
+              </div>
+              <p>monad unit function</p>
+<pre><code># munit :: M -&gt; t -&gt; M t
+munit(Maybe) 42   # =&gt; Just 42</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>O.munit = munit = multi()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-31">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-31">&#182;</a>
+              </div>
+              <p>monad binding operation</p>
+<pre><code># mbind :: M t -&gt; (t -&gt; M u) -&gt; M u
+mbind Just 42, ((x) -&gt; Just x + 1)  # Just 43</code></pre>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>O.mbind = mbind = multi()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-32">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-32">&#182;</a>
+              </div>
+              <p>define a monad</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>O.monad = <span class="function"><span class="title">monad</span></span> = (munit_p, munit_f, mbind_p, mbind_f) -&gt;
+  munit.method munit_p, munit_f
+  mbind.method mbind_p, mbind_f</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-33">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-33">&#182;</a>
+              </div>
+              <p>...</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>O.fmap = fmap = multi()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-34">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-34">&#182;</a>
+              </div>
+              <p>...</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>O.mjoin = mjoin = multi()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-35">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-35">&#182;</a>
+              </div>
+              <p>...</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>O.functor = <span class="function"><span class="title">functor</span></span> = (fmap_p, fmap_f, mjoin_p, mjoin_f) -&gt;
+  fmap.method  fmap_p , fmap_f
+  mjoin.method mjoin_p, mjoin_f</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-36">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-36">&#182;</a>
+              </div>
+              <p>...</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>O.mzero = mzero = multi()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-37">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-37">&#182;</a>
+              </div>
+              <p>...</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>O.mplus = mplus = multi()</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-38">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-38">&#182;</a>
+              </div>
+              <p>...</p>
+
+            </div>
+            
+            <div class="content"><div class='highlight'><pre>O.monadplus = <span class="function"><span class="title">monadplus</span></span> = (mzero_p, mzero_f, mplus_p, mplus_f) -&gt;
+  mzero.method mzero_p, mzero_f
+  mplus.method mplus_p, mplus_f</pre></div></div>
+            
+        </li>
+        
+        
+        <li id="section-39">
+            <div class="annotation">
+              
+              <div class="pilwrap for-h2">
+                <a class="pilcrow" href="#section-39">&#182;</a>
+              </div>
+              <h2>ADTs</h2>
+
+            </div>
+            
+        </li>
+        
+        
+        <li id="section-40">
+            <div class="annotation">
+              
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-40">&#182;</a>
               </div>
               <p>algebraic data type; returns an object with <code>.ctor1</code>, ...; each
 constructor creates an object using the supplied function, which is
@@ -602,11 +760,11 @@ Either, List</p>
         </li>
         
         
-        <li id="section-31">
+        <li id="section-41">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-31">&#182;</a>
+                <a class="pilcrow" href="#section-41">&#182;</a>
               </div>
                <!-- }}}1 -->
 
@@ -625,11 +783,11 @@ Either, List</p>
         </li>
         
         
-        <li id="section-32">
+        <li id="section-42">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-32">&#182;</a>
+                <a class="pilcrow" href="#section-42">&#182;</a>
               </div>
               <p>curried &amp; flipped match</p>
 <pre><code>match_(Nothing: (-&gt; false), Just: ((x) -&gt; true))(Just 42)</code></pre>
@@ -641,11 +799,11 @@ Either, List</p>
         </li>
         
         
-        <li id="section-33">
+        <li id="section-43">
             <div class="annotation">
               
               <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-33">&#182;</a>
+                <a class="pilcrow" href="#section-43">&#182;</a>
               </div>
               <h2>Maybe</h2>
 
@@ -654,11 +812,11 @@ Either, List</p>
         </li>
         
         
-        <li id="section-34">
+        <li id="section-44">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-34">&#182;</a>
+                <a class="pilcrow" href="#section-44">&#182;</a>
               </div>
               <p>Maybe type: optional value</p>
 
@@ -669,29 +827,37 @@ Either, List</p>
   Just: (x) -&gt; { value: x }
 
 O.Nothing = Nothing = Maybe.Nothing
-O.Just    = Just    = Maybe.Just</pre></div></div>
+O.Just    = Just    = Maybe.Just
+
+monad ((x) -&gt; x == Maybe),          <span class="comment"># munit</span>
+      ((x) -&gt; (y) -&gt; Just y),
+      ((m, f) -&gt; m.type == Maybe),  <span class="comment"># mbind</span>
+      ((m, f) -&gt; match m,
+        Nothing: (-&gt; Nothing())
+        Just: ((x) -&gt; f x.value) )</pre></div></div>
             
         </li>
         
         
-        <li id="section-35">
+        <li id="section-45">
             <div class="annotation">
               
-              <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-35">&#182;</a>
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-45">&#182;</a>
               </div>
-              <h2>Either</h2>
+              <p>...</p>
+<h2>Either</h2>
 
             </div>
             
         </li>
         
         
-        <li id="section-36">
+        <li id="section-46">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-36">&#182;</a>
+                <a class="pilcrow" href="#section-46">&#182;</a>
               </div>
               <p>Either type: value with two possibilities</p>
 
@@ -707,24 +873,25 @@ O.Right = Right = Either.Right</pre></div></div>
         </li>
         
         
-        <li id="section-37">
+        <li id="section-47">
             <div class="annotation">
               
-              <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-37">&#182;</a>
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-47">&#182;</a>
               </div>
-              <h2>List</h2>
+              <p>...</p>
+<h2>List</h2>
 
             </div>
             
         </li>
         
         
-        <li id="section-38">
+        <li id="section-48">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-38">&#182;</a>
+                <a class="pilcrow" href="#section-48">&#182;</a>
               </div>
               <p>List type: lazy list</p>
 
@@ -740,13 +907,14 @@ O.Cons  = Cons  = List.Cons</pre></div></div>
         </li>
         
         
-        <li id="section-39">
+        <li id="section-49">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-39">&#182;</a>
+                <a class="pilcrow" href="#section-49">&#182;</a>
               </div>
-              <p>create a List from arguments</p>
+              <p>...</p>
+<p>create a List from arguments</p>
 <pre><code>list 1, 2, 3</code></pre>
 
             </div>
@@ -757,11 +925,11 @@ O.Cons  = Cons  = List.Cons</pre></div></div>
         </li>
         
         
-        <li id="section-40">
+        <li id="section-50">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-40">&#182;</a>
+                <a class="pilcrow" href="#section-50">&#182;</a>
               </div>
               <p>create a list from arguments + tail</p>
 <pre><code>cons 1, 2, 3, list(4, 5, 6)</code></pre>
@@ -776,11 +944,11 @@ O.Cons  = Cons  = List.Cons</pre></div></div>
         </li>
         
         
-        <li id="section-41">
+        <li id="section-51">
             <div class="annotation">
               
               <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-41">&#182;</a>
+                <a class="pilcrow" href="#section-51">&#182;</a>
               </div>
               <h2>List functions</h2>
 
@@ -789,11 +957,11 @@ O.Cons  = Cons  = List.Cons</pre></div></div>
         </li>
         
         
-        <li id="section-42">
+        <li id="section-52">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-42">&#182;</a>
+                <a class="pilcrow" href="#section-52">&#182;</a>
               </div>
               <p>List each</p>
 <pre><code>List.each ((x) -&gt; console.log x), list(1,2,3)</code></pre>
@@ -807,11 +975,11 @@ O.Cons  = Cons  = List.Cons</pre></div></div>
         </li>
         
         
-        <li id="section-43">
+        <li id="section-53">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-43">&#182;</a>
+                <a class="pilcrow" href="#section-53">&#182;</a>
               </div>
               <p>List to Array</p>
 
@@ -823,11 +991,11 @@ O.Cons  = Cons  = List.Cons</pre></div></div>
         </li>
         
         
-        <li id="section-44">
+        <li id="section-54">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-44">&#182;</a>
+                <a class="pilcrow" href="#section-54">&#182;</a>
               </div>
               <p>List length</p>
 
@@ -838,11 +1006,11 @@ O.Cons  = Cons  = List.Cons</pre></div></div>
         </li>
         
         
-        <li id="section-45">
+        <li id="section-55">
             <div class="annotation">
               
               <div class="pilwrap for-h2">
-                <a class="pilcrow" href="#section-45">&#182;</a>
+                <a class="pilcrow" href="#section-55">&#182;</a>
               </div>
               <h2>...</h2>
 
@@ -851,11 +1019,11 @@ O.Cons  = Cons  = List.Cons</pre></div></div>
         </li>
         
         
-        <li id="section-46">
+        <li id="section-56">
             <div class="annotation">
               
               <div class="pilwrap ">
-                <a class="pilcrow" href="#section-46">&#182;</a>
+                <a class="pilcrow" href="#section-56">&#182;</a>
               </div>
               <p>...</p>
 <!-- vim: set tw=70 sw=2 sts=2 et fdm=marker : -->
