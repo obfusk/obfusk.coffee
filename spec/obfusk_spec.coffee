@@ -187,8 +187,8 @@ describe 'Maybe', ->                                            # {{{1
   f =
     Nothing: -> 'Nothing'
     Just: (x) -> "Value: #{x.value}"
-  x = O.Maybe.Nothing()
-  y = O.Maybe.Just(42)
+  x = O.Nothing()
+  y = O.Just(42)
 
   describe 'Nothing', ->
     it 'ctor'       , -> expect(x.ctor)       .toBe 'Nothing'
@@ -211,14 +211,25 @@ describe 'Maybe', ->                                            # {{{1
     it 'Nothing'    , -> expect(a)            .toBe 'Nothing'
     it 'Just'       , -> expect(b)            .toBe 'Value: 42'
     it 'Just (_)'   , -> expect(c)            .toBe 'Value: 42'
+
+  describe 'monad', ->
+    a = O.mbind O.Nothing(), (-> O.error 'oops')
+    b = O.mbind O.Just(42), (-> O.Nothing())
+    c = O.mbind O.Just(42), ((x) -> O.Just x + 1)
+
+    it 'N >== ? == N'   , -> expect(a.isNothing).toBe true
+    it 'J >== ->N == N' , -> expect(b.isNothing).toBe true
+    it 'J >== ->J == J' , -> expect(c.isJust).toBe true
+    it 'J >== ->J has correct value',
+      -> expect(c.value).toBe 43
                                                                 # }}}1
 
 describe 'Either', ->                                           # {{{1
   f =
     Left:  (x) -> "L: #{x.value}"
     Right: (x) -> "R: #{x.value}"
-  x = O.Either.Left(42)
-  y = O.Either.Right(37)
+  x = O.Left(42)
+  y = O.Right(37)
 
   describe 'match', ->
     a = O.match x, f
@@ -232,8 +243,8 @@ describe 'List', ->                                             # {{{1
   f =
     Nil: -> 'Nil'
     Cons: (x) -> O.List.toArray(x).join ', '
-  x = O.List.Nil()
-  y = O.List.Cons(42, O.list(99))
+  x = O.Nil()
+  y = O.Cons(42, O.list(99))
   z = O.list(U.range(10)...)
 
   a = O.cons(1,2,3,z)

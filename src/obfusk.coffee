@@ -242,6 +242,49 @@ O.lazy = lazy = (x) ->                                          # {{{1
                                                       #  <!-- }}}1 -->
 
 
+# functor, monad, monadplus, ...
+# ------------------------------
+
+# monad unit function
+#
+#     # munit :: M -> t -> M t
+#     munit(Maybe) 42   # => Just 42
+O.munit = munit = multi()
+
+# monad binding operation
+#
+#     # mbind :: M t -> (t -> M u) -> M u
+#     mbind Just 42, ((x) -> Just x + 1)  # Just 43
+O.mbind = mbind = multi()
+
+# define a monad
+O.monad = monad = (munit_p, munit_f, mbind_p, mbind_f) ->
+  munit.method munit_p, munit_f
+  mbind.method mbind_p, mbind_f
+
+# ...
+O.fmap = fmap = multi()
+
+# ...
+O.mjoin = mjoin = multi()
+
+# ...
+O.functor = functor = (fmap_p, fmap_f, mjoin_p, mjoin_f) ->
+  fmap.method  fmap_p , fmap_f
+  mjoin.method mjoin_p, mjoin_f
+
+# ...
+O.mzero = mzero = multi()
+
+# ...
+O.mplus = mplus = multi()
+
+# ...
+O.monadplus = monadplus = (mzero_p, mzero_f, mplus_p, mplus_f) ->
+  mzero.method mzero_p, mzero_f
+  mplus.method mplus_p, mplus_f
+
+
 # ADTs
 # ----
 
@@ -287,6 +330,15 @@ O.Maybe = Maybe = data
 O.Nothing = Nothing = Maybe.Nothing
 O.Just    = Just    = Maybe.Just
 
+monad ((x) -> x == Maybe),          # munit
+      ((x) -> (y) -> Just y),
+      ((m, f) -> m.type == Maybe),  # mbind
+      ((m, f) -> match m,
+        Nothing: (-> Nothing())
+        Just: ((x) -> f x.value) )
+
+# ...
+
 
 # Either
 # ------
@@ -299,6 +351,8 @@ O.Either = Either = data
 O.Left  = Left  = Either.Left
 O.Right = Right = Either.Right
 
+# ...
+
 
 # List
 # ----
@@ -310,6 +364,8 @@ O.List = List = data
 
 O.Nil   = Nil   = List.Nil
 O.Cons  = Cons  = List.Cons
+
+# ...
 
 # create a List from arguments
 #
