@@ -28,8 +28,9 @@ task :pages do
   sh 'rake clean && rake docs'
   sh 'git checkout gh-pages'
   sh 'rake cpdocs'
+  sh 'git add .'
   sh 'git status'
   puts 'press enter to continue ...'; $stdin.readline
-  sh 'git commit -am ...'
+  sh 'git commit -m ...'
   sh 'git checkout master'
 end
